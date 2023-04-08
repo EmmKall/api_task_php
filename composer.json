@@ -1,0 +1,26 @@
+{
+    "name": "benom/api_tasks",
+    "description": "API with PHP and MySQL",
+    "type": "api",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "Controller\\": "src/controllers",
+            "Database\\": "src/database",
+            "Helper\\": "src/helpers",
+            "Model\\": "src/models",
+            "Config\\": "src/config"
+        }
+    },
+    "authors": [
+        {
+            "name": "emmkall",
+            "email": "ing.emmanuel.cal@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "mikecao/flight": "^2.0",
+        "firebase/php-jwt": "^6.4"
+    }
+}
