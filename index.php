@@ -14,6 +14,7 @@ use Controller\UserController;
 /* Login */
 Flight::route('POST /login', function() { UserController::login(); } );
 Flight::route('POST /forget-password', function() { UserController::forget_password(); } );
+Flight::route('POST /change-password', function() { UserController::update_pass(); } );
 /* Users Routes */
 Flight::route('GET /users', function() { UserController::index(); } );
 Flight::route('GET /users/@id', function( $id ) { UserController::find( $id  ); } );

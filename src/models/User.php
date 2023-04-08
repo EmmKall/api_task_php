@@ -69,4 +69,11 @@ class User
 
     }
 
+    public static function updatePassword( $arrData )
+    {
+        $sql = ' UPDATE users SET password = :password WHERE email = :email ';
+        $response = Conection::update( $sql, $arrData );
+        return $response;
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Flight;
+use Helper\Mail;
 use Model\User;
 use Helper\ValidData;
 use Helper\Password;
@@ -152,18 +153,50 @@ class UserController
         ]); }
         /* Generar ramdom password */
         $new_pass = Password::genereRamdomPassword();
+        /* Update new password */
+        $arrData = [
+            ':email' => $data->email,
+            ':password' => Password::Encryp( $new_pass )
+        ];
+        $updatePass = $user->updatePassword( $arrData );
+        if( $updatePass[ 'status' ] !== 200 )
+        {
+            $response = [
+                'status' => 500,
+                'msg'    => 'Internal error'
+            ];
+            Response::returnResponse( $response );
+        }
         /* Send by email */
-        Response::returnResponse([
+        $body_mail = Mail::create_body( $new_pass );
+        //$wasSendMail = Mail::send_mail( $data->email, $body_mail, 'Recover password', [] );
+        Mail::sendFastMail( 'ing.emmanuel.cal@gmail.com', 'Recover Password', $body_mail );
+        $response = [
             'status'   => 200,
             'email'    => $data->email,
             'new_pass' => $new_pass
-        ]);
+        ];        // Response
+        Response::returnResponse( $response );
     }
 
     public static function update_pass()
     {
+        /* Valid user */
+        Validjwt::confirmAuthentication();
         $data = Flight::request()->data;
         $labelsIn = [ 'email', 'password' ];
+        /* Valid data */
+        $validIn = ValidData::validIN( $data, $labelsIn );
+        if( sizeof( $validIn) > 0 ) { Response::returnResponse( $validIn ); }
+        /* Create Data */
+        $arrData = [
+            ':email'    => $data->email,
+            ':password' => Password::Encryp( $data->password )
+        ];
+        /* Update Password */
+        $user = new User();
+        $response = $user->updatePassword( $arrData );
+        Response::returnResponse( $response );
     }
 
 }
