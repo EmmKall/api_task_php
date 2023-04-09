@@ -3,7 +3,6 @@
 namespace Model;
 
 use Database\Conection;
-use Helper\Response;
 
 class User
 {
@@ -15,7 +14,7 @@ class User
 
     public function index(): array
     {
-        $sql = ' SELECT name, email, phone FROM users ';
+        $sql = ' SELECT id, name, email, phone FROM users ORDER BY name, email ';
         $response = Conection::getAll( $sql );
         return $response;
     }

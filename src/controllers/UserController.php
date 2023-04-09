@@ -3,8 +3,8 @@
 namespace Controller;
 
 use Flight;
-use Helper\Mail;
 use Model\User;
+use Helper\Mail;
 use Helper\ValidData;
 use Helper\Password;
 use Helper\Response;
@@ -16,7 +16,6 @@ class UserController
     {
         /* Valid user */
         Validjwt::confirmAuthentication();
-        //$validUser = Validjwt::validJWT( $jtk );
         $user = new User();
         $response = $user->index();
         Response::returnResponse( $response );
