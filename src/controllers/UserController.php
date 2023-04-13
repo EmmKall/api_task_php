@@ -75,8 +75,8 @@ class UserController
             ':email'    => $data->email,
             ':phone'    => $data->phone,
         ];
-        $arrData[':password'] = ( $data->password !== null && trim( $data->password ) !== '' ) ? Password::Encryp( $data->password ) : '';
-        $response = $user->update( $arrData );
+        $pass = ( $data->password !== null ) ? $data->password : '';
+        $response = $user->update( $arrData, $pass );
         Response::returnResponse( $response );
     }
 
@@ -108,9 +108,13 @@ class UserController
             'status' => 403,
             'msg'    => 'Email y/o password not valid'
         ]); }
+        /* Valid Password */
+        Password::DesEncryp( $data->password, $findUser[ 'data']['password'] );
         /* Update Token */
         $id    = $findUser[ 'data' ][ 'id' ];
         $email = $findUser[ 'data' ][ 'email' ];
+        $rol   = $findUser[ 'data' ][ 'rol' ];
+        
         $token = Validjwt::setToken( $id, $email );
         /* Actualizar Token */
         $arrData = [
@@ -124,7 +128,9 @@ class UserController
                 'status' => 200,
                 'data'   => [
                     'user'   => $findUser[ 'data' ][ 'name' ],
-                    'token'  => $token
+                    'token'  => $token,
+                    'id'     => $id,
+                    'rol'    => $rol
                 ]
             ]);
         } else

@@ -9,7 +9,8 @@
             "Database\\": "src/database",
             "Helper\\": "src/helpers",
             "Model\\": "src/models",
-            "Config\\": "src/config"
+            "Config\\": "src/config",
+            "Route\\": "src/routes"
         }
     },
     "authors": [

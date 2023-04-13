@@ -3,6 +3,7 @@
 namespace Model;
 
 use Database\Conection;
+use Helper\Password;
 
 class User
 {
@@ -14,14 +15,14 @@ class User
 
     public function index(): array
     {
-        $sql = ' SELECT id, name, email, phone FROM users ORDER BY name, email ';
+        $sql = ' SELECT id, name, email, phone, rol FROM users ORDER BY name, email ';
         $response = Conection::getAll( $sql );
         return $response;
     }
 
     public function find( $arrData ): array
     {
-        $sql = " SELECT id, name, email, phone FROM users WHERE id = :id ";
+        $sql = " SELECT id, name, email, phone, rol FROM users WHERE id = :id ";
         $response = Conection::find( $sql, $arrData );
         return $response;
     }
@@ -33,11 +34,12 @@ class User
         return $response;
     }
 
-    public function update( $arrData ): array
+    public function update( array $arrData, string $pass ): array
     {
-        if( $arrData[':password'] !== ''  )
+        if( $pass !== '' )
         {
             $sql = ' UPDATE users SET name = :name, email = :email, phone = :phone, password = :password WHERE id = :id ';
+            $arrData[':password'] = ( $pass !== null && trim( $pass ) !== '' ) ? Password::Encryp( $pass ) : '';
         } else 
         {
             $sql = ' UPDATE users SET name = :name, email = :email, phone = :phone WHERE id = :id ';
@@ -55,7 +57,7 @@ class User
 
     public function login( $arrData ): array
     {
-        $sql = ' SELECT id, name, email, password FROM users WHERE email = :email ';
+        $sql = ' SELECT id, name, email, rol, password FROM users WHERE email = :email ';
         $response = Conection::find( $sql, $arrData );
         return $response;
     }

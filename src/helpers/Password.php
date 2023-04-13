@@ -16,6 +16,14 @@ class Password
     public static function DesEncryp( $pass, $encryp_pass )
     {
         $isCorrect = password_verify( $pass, $encryp_pass );
+        if( !$isCorrect )
+        {
+            $response =[
+                'status' => 403,
+                'msg'    => 'Credentials not valid'
+            ];
+            Response::returnResponse( $response );
+        }
         return $isCorrect;
 
     }

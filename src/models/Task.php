@@ -14,21 +14,21 @@ class Task
 
     public function index()
     {
-        $sql = ' SELECT t.name AS name, t.description AS description, u.name AS user, c.name AS category FROM tasks AS t JOIN users AS u ON u.id = t.id_user JOIN categories AS c ON c.id = t.id_category ORDER BY category ';
+        $sql = ' SELECT t.id AS id, t.name AS name, t.description AS description, u.name AS user, c.name AS category FROM tasks AS t JOIN users AS u ON u.id = t.id_user JOIN categories AS c ON c.id = t.id_category ORDER BY category ';
         $response = Conection::getAll( $sql );
         return $response;
     }
 
     public function find( $arrData )
     {
-        $sql = ' SELECT t.name AS name, t.description AS description, u.name AS user, c.name AS category FROM tasks AS t JOIN users AS u ON u.id = t.id_user JOIN categories AS c ON c.id = t.id_category WHERE t.id = :id ';
+        $sql = ' SELECT t.name AS name, t.description AS description, u.name AS user, c.name AS category, c.id AS idCategory FROM tasks AS t JOIN users AS u ON u.id = t.id_user JOIN categories AS c ON c.id = t.id_category WHERE t.id = :id ';
         $response = Conection::find( $sql, $arrData );
         return $response;
     }
 
     public function findAll( $arrData )
     {
-        $sql = ' SELECT t.name AS name, t.description AS description, u.name AS user, c.name AS category FROM tasks AS t JOIN users AS u ON u.id = t.id_user JOIN categories AS c ON c.id = t.id_category WHERE u.id = :user ';
+        $sql = ' SELECT t.id AS id, t.name AS name, t.description AS description, u.name AS user, c.name AS category, c.id AS idCategory FROM tasks AS t JOIN users AS u ON u.id = t.id_user JOIN categories AS c ON c.id = t.id_category WHERE u.id = :user ';
         $response = Conection::findAll( $sql, $arrData );
         return $response;
     }
